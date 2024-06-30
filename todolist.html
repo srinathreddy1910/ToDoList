@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(45deg, #FF9A9E, #FAD0C4, #FFD1FF, #F3E8FF);
+            background-size: 400% 400%;
+            animation: gradientBackground 15s ease infinite, motionGraphics 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            perspective: 1000px;
+        }
+
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;
+            animation: fadeIn 2s ease-out, rotate3D 2s infinite linear;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateZ(-50px); }
+            to { opacity: 1; transform: translateZ(0); }
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            transform: translateZ(50px);
+        }
+
+        #dateTime {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 20px;
+            transform: translateZ(50px);
+        }
+
+        .input-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            transform: translateZ(50px);
+        }
+
+        #taskInput {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: box-shadow 0.3s;
+            transform: translateZ(50px);
+        }
+
+        #taskInput:focus {
+            box-shadow: 0 0 10px rgba(81, 203, 238, 1);
+            border: 1px solid rgba(81, 203, 238, 1);
+        }
+
+        /* Hover Button Styles */
+        .hover-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transform: translateZ(50px);
+        }
+
+        .hover-button:hover {
+            background: #45a049;
+            transform: scale(1.1) translateZ(50px);
+        }
+
+        /* Different Button Colors */
+        #allTasksButton {
+            background: #2196F3; /* Blue */
+        }
+
+        #completedTasksButton {
+            background: #4CAF50; /* Green */
+        }
+
+        #pendingTasksButton {
+            background: #FF9800; /* Orange */
+        }
+
+        .filter-buttons button {
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transform: translateZ(50px);
+        }
+
+        .filter-buttons button:hover {
+            transform: scale(1.1) translateZ(50px);
+        }
+
+        /* Task List Styles */
+        #taskList {
+            list-style: none;
+            padding: 0;
+        }
+
+        .task {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s, background 0.3s;
+            animation: slideIn 0.5s ease-out;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%) translateZ(-50px); opacity: 0; }
+            to { transform: translateX(0) translateZ(0); opacity: 1; }
+        }
+
+        .task:hover {
+            transform: translateX(10px) translateZ(50px);
+            background: #f1f1f1;
+        }
+
+        .task.complete {
+            text-decoration: line-through;
+            background: #d9ffd9;
+        }
+
+        .task button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            transform: translateZ(50px);
+        }
+
+        /* Additional Task Button Styles */
+        .task button.complete {
+            color: #2196F3;
+        }
+
+        .task button.edit {
+            color: #4CAF50;
+        }
+
+        .task button.delete {
+            color: #f44336;
+        }
+
+        /* Glowing Icon Hover Effect */
+        .task button.complete:hover {
+            color: #00e5ff;
+            text-shadow: 0 0 8px #00e5ff;
+            transform: translateZ(50px);
+        }
+
+        /* Task Edit Button Hover Effect */
+        .task button.edit:hover {
+            color: #76ff03;
+            text-shadow: 0 0 8px #76ff03;
+            transform: translateZ(50px);
+        }
+
+        /* Task Delete Button Hover Effect */
+        .task button.delete:hover {
+            color: #ff3d00;
+            text-shadow: 0 0 8px #ff3d00;
+            transform: translateZ(50px);
+        }
+
+        /* Traditional Animation */
+        @keyframes traditionalAnimation {
+            0% { opacity: 0; transform: translateY(-100px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .task {
+            animation: traditionalAnimation 0.5s ease-out;
+        }
+
+        /* 2D Animation */
+        .hover-button {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .hover-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 3D Animation */
+        .container {
+            animation: rotate3D 0s infinite linear;
+        }
+
+        @keyframes rotate3D {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+
+        /* Stop Motion Animation */
+        @keyframes stopMotion {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .task:hover {
+            animation: stopMotion 0.5s steps(2, end);
+        }
+
+        /* Motion Graphics */
+        @keyframes motionGraphics {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            animation: gradientBackground 0s ease infinite, motionGraphics 0s ease infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ToDo List</h1>
+        <div id="dateTime"></div>
+        <div class="input-container">
+            <input type="text" id="taskInput" placeholder="Add a new task...">
+            <button id="addTaskButton" class="hover-button">Add Task</button>
+        </div>
+        <div class="filter-buttons">
+            <button id="allTasksButton" class="hover-button">All</button>
+            <button id="completedTasksButton" class="hover-button">Completed</button>
+            <button id="pendingTasksButton" class="hover-button">Pending</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const taskInput = document.getElementById('taskInput');
+            const addTaskButton = document.getElementById('addTaskButton');
+            const taskList = document.getElementById('taskList');
+            const allTasksButton = document.getElementById('allTasksButton');
+            const completedTasksButton = document.getElementById('completedTasksButton');
+            const pendingTasksButton = document.getElementById('pendingTasksButton');
+            const dateTimeElement = document.getElementById('dateTime');
+
+            function updateDateTime() {
+                const now = new Date();
+                const date = now.toLocaleDateString();
+                const time = now.toLocaleTimeString();
+                dateTimeElement.textContent = `${date} ${time}`;
+            }
+            setInterval(updateDateTime, 1000);
+            updateDateTime();
+
+            addTaskButton.addEventListener('click', () => {
+                const taskText = taskInput.value.trim();
+                if (taskText) {
+                    addTask(taskText);
+                    taskInput.value = '';
+                }
+            });
+
+            taskInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    addTaskButton.click(); // Trigger click event on addTaskButton
+                }
+            });
+
+            allTasksButton.addEventListener('click', () => {
+                filterTasks('all');
+            });
+
+            completedTasksButton.addEventListener('click', () => {
+                filterTasks('completed');
+            });
+
+            pendingTasksButton.addEventListener('click', () => {
+                filterTasks('pending');
+            });
+
+            function addTask(taskText) {
+                const task = document.createElement('li');
+                task.classList.add('task');
+                task.innerHTML = `
+                    <span>${taskText}</span>
+                    <div>
+                        <button class="complete">&#10004;</button>
+                        <button class="edit">&#9998;</button>
+                        <button class="delete">&#10006;</button>
+                    </div>
+                `;
+
+                const completeButton = task.querySelector('.complete');
+                const editButton = task.querySelector('.edit');
+                const deleteButton = task.querySelector('.delete');
+                const taskSpan = task.querySelector('span');
+
+                completeButton.addEventListener('click', () => {
+                    task.classList.toggle('complete');
+                });
+
+                editButton.addEventListener('click', () => {
+                    const newTaskText = prompt('Edit your task', taskSpan.textContent);
+                    if (newTaskText !== null && newTaskText.trim() !== '') {
+                        taskSpan.textContent = newTaskText;
+                    }
+                });
+
+                deleteButton.addEventListener('click', () => {
+                    task.remove();
+                });
+
+                taskList.appendChild(task);
+            }
+
+            function filterTasks(filter) {
+                const tasks = taskList.getElementsByClassName('task');
+                for (let task of tasks) {
+                    switch (filter) {
+                        case 'all':
+                            task.style.display = '';
+                            break;
+                        case 'completed':
+                            task.style.display = task.classList.contains('complete') ? '' : 'none';
+                            break;
+                        case 'pending':
+                            task.style.display = task.classList.contains('complete') ? 'none' : '';
+                            break;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
